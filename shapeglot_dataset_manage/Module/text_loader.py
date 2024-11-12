@@ -1,5 +1,6 @@
 import os
 import csv
+from tqdm import tqdm
 
 
 class TextLoader(object):
@@ -27,7 +28,23 @@ class TextLoader(object):
         with open(self.shapenet_chairs_csv_file_path, mode="r", encoding="utf-8") as file:
             reader = csv.DictReader(file)
 
-            for row in reader:
-                print(row)
-                break
+            for row in tqdm(reader, total=94120):
+                if not row['correct']:
+                    continue
+
+                text = row['text']
+
+                target_chair = row['target_chair']
+                if target_chair == '0':
+                    chair_id = row['chair_a']
+                elif target_chair == '1':
+                    chair_id = row['chair_b']
+                else:
+                    chair_id = row['chair_c']
+
+                if chair_id not in self.text_dict:
+                    self.text_dict[chair_id] = [text]
+                else:
+                    self.text_dict[chair_id].append(text)
+
         return True

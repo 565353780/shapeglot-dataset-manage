@@ -5,4 +5,5 @@ def demo():
 
     text_loader = TextLoader(dataset_root_folder_path)
     text_loader.loadTexts()
+    print(len(text_loader.text_dict.keys()))
     return True
