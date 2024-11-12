@@ -33,6 +33,8 @@ class TextLoader(object):
 
         self.reset()
 
+        chair_text_dict = {}
+
         spell_corrector = next(unpickle_data(self.word_spell_pkl_file_path))
 
         with open(self.shapenet_chairs_csv_file_path, mode="r", encoding="utf-8") as file:
@@ -66,9 +68,10 @@ class TextLoader(object):
                 else:
                     chair_id = row['chair_c']
 
-                if chair_id not in self.text_dict:
-                    self.text_dict[chair_id] = [correct_text]
+                if chair_id not in chair_text_dict:
+                    chair_text_dict[chair_id] = [correct_text]
                 else:
-                    self.text_dict[chair_id].append(correct_text)
+                    chair_text_dict[chair_id].append(correct_text)
 
+        self.text_dict['03001627'] = chair_text_dict
         return True
